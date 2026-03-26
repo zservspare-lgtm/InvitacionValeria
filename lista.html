@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Invitados Valeria</title>
+  <style>
+    body { font-family: 'Cormorant Garamond', serif; background: #f5f3fc; padding: 2rem; }
+    .container { max-width: 900px; margin: 0 auto; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(145,119,200,0.2); }
+    h1 { color: #7b68b5; text-align: center; font-size: 2.5rem; }
+    .stats { display: flex; gap: 1rem; margin: 2rem 0; }
+    .card { flex: 1; background: #ede9f9; padding: 1.5rem; border-radius: 10px; text-align: center; border: 1px solid #9177c8; }
+    .card span { display: block; font-size: 2.5rem; font-weight: bold; color: #7b68b5; }
+    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+    th { background: #7b68b5; color: white; padding: 1rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+    td { padding: 1rem; border-bottom: 1px solid #eee; text-align: center; }
+    .si { color: #2ecc71; font-weight: bold; }
+    .no { color: #e74c3c; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Lista de Invitados</h1>
+    <div class="stats">
+      <div class="card"><p>Familias/Grupos</p><span id="totalConf">0</span></div>
+      <div class="card"><p>Total de Personas</p><span id="totalPax">0</span></div>
+    </div>
+    <table id="tabla">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Nombre</th>
+          <th>Asiste</th>
+          <th>Pases</th>
+          <th>Mensaje</th>
+        </tr>
+      </thead>
+      <tbody id="lista"></tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    // 1. IMPORTACIONES DE FIREBASE
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // 2. TUS DATOS DE CONFIGURACIÓN (Mantenemos los mismos de la invitación)
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0Xoa7RdbQdP4hTKvl_GJX3brNYTBjfU4",
+      authDomain: "invit-9dcbd.firebaseapp.com",
+      projectId: "invit-9dcbd",
+      storageBucket: "invit-9dcbd.firebasestorage.app",
+      messagingSenderId: "474365846886",
+      appId: "1:474365846886:web:e63bbdbd02f6a6d07394a7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // 3. LEER DATOS EN TIEMPO REAL
+    const q = query(collection(db, "invitados"), orderBy("fecha", "desc"));
+
+    onSnapshot(q, (snapshot) => {
+      let pax = 0; 
+      let conf = 0;
+      const lista = document.getElementById('lista');
+      lista.innerHTML = ""; // Limpiar tabla antes de recargar
+
+      snapshot.forEach((doc) => {
+        const i = doc.data();
+        
+        // Contadores
+        if(i.asiste === 'si') { 
+          conf++; 
+          pax += parseInt(i.pases || 0); 
+        }
+
+        // Crear fila
+        const fila = `
+          <tr>
+            <td style="font-size: 0.8rem; color: #888;">${i.fecha || ''}</td>
+            <td style="font-weight: bold;">${i.nombre}</td>
+            <td class="${i.asiste}">${i.asiste === 'si' ? 'SÍ' : 'NO'}</td>
+            <td>${i.pases || 0}</td>
+            <td style="font-style:italic; font-size: 0.9rem;">"${i.mensaje || ''}"</td>
+          </tr>
+        `;
+        lista.innerHTML += fila;
+      });
+
+      // Actualizar tarjetas de resumen
+      document.getElementById('totalConf').innerText = conf;
+      document.getElementById('totalPax').innerText = pax;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Muro de Deseos Infinito - Valeria</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #9177c8;
+      --cream: #f5f3fc;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at center, #1e1530 0%, #0d0820 100%);
+      color: white;
+      font-family: 'Cormorant Garamond', serif;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .header {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(13, 8, 32, 0.9);
+      width: 100%;
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      color: var(--gold);
+      margin: 0;
+      text-shadow: 0 0 20px rgba(145,119,200,0.5);
+    }
+
+    /* Contenedor principal */
+    #wrapper {
+      width: 90%;
+      max-width: 900px;
+      height: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* El contenedor que se mueve */
+    #muro {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      padding-top: 5vh;
+      will-change: transform;
+    }
+
+    .mensaje-card {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid var(--gold);
+      padding: 2.5rem;
+      border-radius: 0 20px 20px 0;
+      text-align: center;
+    }
+
+    .nombre {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .texto {
+      font-size: 2.2rem;
+      line-height: 1.3;
+      font-style: italic;
+      color: #ede9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Mis XV - Valeria Geraldine</h1>
+  </div>
+  
+  <div id="wrapper">
+    <div id="muro">
+      </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD0Xoa7RdbQdP4hTKvl_GJX3brNYTBjfU4",
+      authDomain: "invit-9dcbd.firebaseapp.com",
+      projectId: "invit-9dcbd",
+      storageBucket: "invit-9dcbd.firebasestorage.app",
+      messagingSenderId: "474365846886",
+      appId: "1:474365846886:web:e63bbdbd02f6a6d07394a7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const muro = document.getElementById('muro');
+
+    let posicion = 0;
+    let animationId;
+
+    // Escuchar cambios en Firestore
+    const q = query(collection(db, "invitados"), orderBy("fecha", "desc"));
+
+    onSnapshot(q, (snapshot) => {
+      const mensajesValidos = [];
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        if (d.mensaje && d.mensaje.trim() !== "") {
+          mensajesValidos.push(d);
+        }
+      });
+
+      renderizarMensajes(mensajesValidos);
+    });
+
+    function renderizarMensajes(lista) {
+      muro.innerHTML = "";
+      
+      // Si no hay mensajes, mostrar algo por defecto
+      if (lista.length === 0) return;
+
+      // Creamos el bloque de mensajes
+      const crearCards = (items) => {
+        return items.map(item => `
+          <div class="mensaje-card">
+            <div class="nombre">${item.nombre}</div>
+            <div class="texto">"${item.mensaje}"</div>
+          </div>
+        `).join('');
+      };
+
+      // TRUCO DEL LOOP INFINITO: 
+      // Insertamos la lista de mensajes TRES veces para que el scroll nunca vea el vacío
+      const contenido = crearCards(lista);
+      muro.innerHTML = contenido + contenido + contenido;
+
+      iniciarAnimacion();
+    }
+
+    function iniciarAnimacion() {
+      if (animationId) cancelAnimationFrame(animationId);
+      
+      const velocidad = 0.8; // Ajusta este número para ir más lento o rápido
+      
+      function step() {
+        posicion -= velocidad;
+        
+        // Cuando el primer tercio de la lista sale de la vista, reiniciamos sin que se note
+        // Esto crea el efecto de loop infinito
+        if (Math.abs(posicion) >= muro.scrollHeight / 3) {
+          posicion = 0;
+        }
+        
+        muro.style.transform = `translateY(${posicion}px)`;
+        animationId = requestAnimationFrame(step);
+      }
+      
+      animationId = requestAnimationFrame(step);
+    }
+  </script>
+</body>
+</html>
