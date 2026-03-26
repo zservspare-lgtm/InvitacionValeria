@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
-    /* ── BASE (DEL DISEÑO QUE TE GUSTA) ── */
+    /* ── BASE ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -21,91 +21,107 @@
     }
 
     html { scroll-behavior: smooth; }
-    body { background: var(--cream); color: var(--text); font-family: 'Cormorant Garamond', serif; overflow-x: hidden; }
+    body { background: var(--cream); color: var(--text); font-family: 'Cormorant Garamond', serif; overflow-x: hidden; width: 100%; }
 
-    /* ── EFECTO PÉTALOS ── */
     #petals-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
-    /* ── PORTADA PREMIUM ── */
+    /* ── PORTADA RESPONSIVA ── */
     .cover {
       position: relative; min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center; padding: 2rem;
+      align-items: center; justify-content: center; text-align: center; padding: 1rem;
       background: radial-gradient(ellipse at 50% 0%, #2e1a5a 0%, #1a0d3a 60%, #0d0820 100%);
     }
-    .cover::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 50% at 50% 100%, rgba(145,119,200,0.22) 0%, transparent 70%);
-    }
 
-    .crown-svg { width: 90px; margin-bottom: 1.2rem; animation: float 4s ease-in-out infinite; z-index: 1; }
+    .crown-svg { width: clamp(60px, 15vw, 90px); margin-bottom: 1.2rem; animation: float 4s ease-in-out infinite; z-index: 1; }
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
     .cover-name {
-      font-family: 'Great Vibes', cursive; font-size: clamp(3.8rem, 11vw, 8rem);
+      font-family: 'Great Vibes', cursive; font-size: clamp(3.2rem, 11vw, 8rem);
       color: var(--gold); text-shadow: 0 0 60px rgba(145,119,200,0.7); z-index: 1;
     }
 
-    /* ── CONTADOR (ESTILO ADAPTADO AL DISEÑO ANEXO) ── */
-    .timer-container { display: flex; gap: 1rem; margin-top: 2.5rem; z-index: 1; }
+    /* ── CONTADOR RESPONSIVO ── */
+    .timer-container { 
+      display: flex; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      gap: 0.8rem; 
+      margin-top: 2.5rem; 
+      z-index: 1; 
+      width: 100%;
+    }
     .timer-box {
       background: rgba(26, 3, 92, 0.05); border: 3px solid rgba(81, 0, 255, 0.61);
-      padding: 0.8rem; border-radius: 15px; min-width: 120px;
+      padding: 0.8rem; border-radius: 15px; width: clamp(80px, 22vw, 120px);
     }
-    .timer-num { display: block; font-size: 1.8rem; color: #fff; font-family: 'Playfair Display', serif; }
-    .timer-label { font-size: 0.6rem; text-transform: uppercase; color: var(--gold-light); letter-spacing: 2px; }
+    .timer-num { display: block; font-size: clamp(1.4rem, 4vw, 1.8rem); color: #fff; font-family: 'Playfair Display', serif; }
+    .timer-label { font-size: 0.55rem; text-transform: uppercase; color: var(--gold-light); letter-spacing: 1px; }
 
     /* ── SECCIONES ── */
     section { 
-    position: relative; 
-    padding: 6rem 2rem; /* Aumentamos un poco el padding para dar aire a la letra grande */
-    max-width: 900px;   /* Un poco más ancho para soportar textos más grandes */
-    margin: 0 auto; 
-    text-align: center; 
-    z-index: 1; 
-}
+      position: relative; 
+      padding: clamp(3rem, 10vw, 6rem) 1.2rem; 
+      max-width: 900px; 
+      margin: 0 auto; 
+      text-align: center; 
+      z-index: 1; 
+    }
 
-.section-label { 
-    font-family: 'Great Vibes', cursive; 
-    /* Aumentado: el mínimo ahora es 3rem y el máximo 5rem */
-    font-size: clamp(3rem, 8vw, 5rem); 
-    color: var(--rose); 
-    margin-bottom: 1rem;
-    line-height: 1.2;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Un toque de profundidad */
-}
+    .section-label { 
+      font-family: 'Great Vibes', cursive; 
+      font-size: clamp(2.8rem, 9vw, 5rem); 
+      color: var(--rose); 
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
     .message-box {
       background: white; border: 1px solid rgba(145,119,200,0.2);
-      padding: 3rem; font-size: clamp(1.2rem, 2.5vw, 1.4rem); line-height: 1.8;
+      padding: clamp(1.5rem, 5vw, 3rem); font-size: clamp(1.1rem, 4vw, 1.4rem); line-height: 1.6;
       box-shadow: 0 10px 40px rgba(145,119,200,0.08); position: relative;
     }
 
-    /* ── DETALLES DEL EVENTO (GRID PREMIUM) ── */
-    .event-bg { background: linear-gradient(135deg, #1e1530 0%, #2e1a5a 100%); color: #ede9f9; padding: 5rem 1.5rem; }
-    .event-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; max-width: 900px; margin: 3rem auto 0; }
+    /* ── PADRES Y PADRINOS RESPONSIVOS ── */
+    .people-grid {
+      display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center;
+    }
+    .people-card {
+      background: white; padding: 2.5rem 1.5rem; border-radius: 20px; 
+      box-shadow: 0 10px 25px rgba(145,119,200,0.1); 
+      flex: 1; min-width: 280px; border: 1px solid rgba(145,119,200,0.1);
+    }
+
+    /* ── EVENTO GRID ── */
+    .event-bg { background: linear-gradient(135deg, #1e1530 0%, #2e1a5a 100%); color: #ede9f9; padding: 4rem 1rem; }
+    .event-grid { 
+      display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 3rem;
+    }
     .event-card {
       background: rgba(255,255,255,0.06); border: 1px solid rgba(145,119,200,0.3);
-      padding: 2.5rem 1.5rem; border-radius: 4px; transition: 0.3s;
+      padding: 2.5rem 1.5rem; border-radius: 20px; flex: 1; min-width: 300px;
+      backdrop-filter: blur(5px); transition: 0.3s;
     }
-    .event-card:hover { transform: translateY(-5px); background: rgba(255,255,255,0.1); }
     .btn-maps {
-      display: inline-block; margin-top: 1.2rem; padding: 0.6rem 1.2rem;
-      border: 1px solid var(--gold-light); color: var(--gold-light);
-      text-decoration: none; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase;
+      display: inline-block; margin-top: 1.2rem; padding: 0.8rem 1.5rem;
+      border: 1px solid var(--gold-light); color: var(--gold-light); border-radius: 30px;
+      text-decoration: none; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
     }
 
-    /* ── RSVP OPTIMIZADO ── */
-    .rsvp-form-container { background: white; padding: 3rem 2rem; border-radius: 2px; border: 1px solid rgba(145,119,200,0.2); max-width: 500px; margin: 2rem auto; }
+    /* ── RSVP RESPONSIVO ── */
+    .rsvp-form-container { 
+      background: white; padding: 2rem 1.5rem; border-radius: 25px; 
+      border: 1px solid rgba(145,119,200,0.2); max-width: 600px; margin: 0 auto;
+      box-shadow: 0 15px 40px rgba(145,119,200,0.15);
+    }
     .input-field { 
-      width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; 
-      font-family: 'Cormorant Garamond'; font-size: 1.1rem; border-radius: 4px;
+      width: 100%; padding: 1rem; margin-bottom: 1rem; border: 1px solid rgba(145,119,200,0.2); 
+      font-family: 'Cormorant Garamond'; font-size: 1.2rem; border-radius: 12px;
     }
-    .btn-submit {
-      width: 100%; background: var(--rose); color: white; border: none; 
-      padding: 15px; border-radius: 30px; font-weight: bold; cursor: pointer;
-      letter-spacing: 2px; font-family: 'Playfair Display';
+    .attend-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;
     }
 
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    footer { text-align: center; padding: 4rem 1rem; opacity: 0.5; font-size: clamp(0.9rem, 3vw, 1.2rem); letter-spacing: 3px; }
   </style>
 </head>
 <body>
@@ -118,7 +134,7 @@
     <circle cx="60" cy="5" r="4" fill="#9177c8"/>
     <line x1="10" y1="60" x2="110" y2="60" stroke="#9177c8" stroke-width="2.5"/>
   </svg>
-  <p style="color:var(--gold-light); font-family:'Great Vibes'; font-size: 4.2rem; z-index:1;">Mis Quince Años</p>
+  <p style="color:var(--gold-light); font-family:'Great Vibes'; font-size: clamp(2.5rem, 8vw, 4.2rem); z-index:1;">Mis Quince Años</p>
   <h1 class="cover-name">Valeria Geraldine</h1>
   
   <div class="timer-container">
@@ -126,176 +142,109 @@
     <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label">Hrs</span></div>
     <div class="timer-box"><span class="timer-num" id="mins">00</span><span class="timer-label">Min</span></div>
     <div class="timer-box"><span class="timer-num" id="secs">00</span><span class="timer-label">Seg</span></div>
-
   </div>
 </div>
 
 <section>
   <p class="section-label">Con la bendición de Dios</p>
   <div class="message-box">
-    <p style="font-style: italic; font-size: 2.3rem; line-height: 1.6;">
-      "Hoy celebro el regalo de la vida y la bendición de
-      cumplir mis quince años. Agradezco a Dios por cada paso dado y
-      por los nuevos senderos que se abren ante mí. Que Su presencia me guíe siempre,
-      me enseñe a brillar con luz propia y a caminar con fe."<br><br>
-      <strong>¡Gracias por compartir conmigo este momento inolvidable!</strong>"
+    <p style="font-style: italic; font-size: clamp(1.4rem, 5vw, 2.3rem); line-height: 1.4;">
+      "Hoy celebro el regalo de la vida y la bendición de cumplir mis quince años. Agradezco a Dios por cada paso dado y por los nuevos senderos que se abren ante mí."
     </p>
+    <p style="margin-top: 2rem; font-weight: bold; font-size: 1.2rem;">¡Gracias por compartir conmigo este momento inolvidable!</p>
   </div>
 </section>
 
-<section style="background: rgba(145,119,200,0.05); max-width: 100%; padding: 4rem 1.5rem;">
-  <div style="max-width: 900px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
-    
-    <div style="background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(145,119,200,0.1); flex: 1; min-width: 300px; border: 1px solid rgba(145,119,200,0.1);">
-      <p class="section-label" style="margin-top: 0;">Mis Padres</p>
-      <hr style="width: 50px; border: 1px solid var(--rose); margin: 1rem auto 2rem; opacity: 0.5;">
-      <p style="font-size: 1.8rem; color: #4a4a4a; line-height: 1.4; font-weight: 500;">
-        Gerardo Alcántara Olguin <br> & <br> Miriam Reyes López
-      </p>
+<section style="background: rgba(145,119,200,0.05); max-width: 100%;">
+  <div class="people-grid">
+    <div class="people-card">
+      <p class="section-label" style="font-size: 2.8rem;">Mis Padres</p>
+      <p style="font-size: 1.5rem; color: #4a4a4a;">Gerardo Alcántara Olguin <br> & <br> Miriam Reyes López</p>
     </div>
-
-    <div style="background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(145,119,200,0.1); flex: 1; min-width: 300px; border: 1px solid rgba(145,119,200,0.1);">
-      <p class="section-label" style="margin-top: 0;">Mis Padrinos</p>
-      <hr style="width: 50px; border: 1px solid var(--rose); margin: 1rem auto 2rem; opacity: 0.5;">
-      <p style="font-size: 1.8rem; color: #4a4a4a; line-height: 1.4; font-weight: 500;">
-        José Félix Alcántara Olguin <br> & <br> Elizabeth Anel Reyes López
-      </p>
+    <div class="people-card">
+      <p class="section-label" style="font-size: 2.8rem;">Mis Padrinos</p>
+      <p style="font-size: 1.5rem; color: #4a4a4a;">José Félix Alcántara Olguin <br> & <br> Elizabeth Anel Reyes López</p>
     </div>
-
   </div>
 </section>
-<div class="event-bg" style="padding: 4rem 0;">
-  <section style="color: inherit; max-width: 1000px; margin: 0 auto;">
-    <p class="section-label" style="color: var(--gold-light); font-size: clamp(3rem, 8vw, 5rem); margin-bottom: 3rem;">
-      ¿Dónde y Cuándo?
-    </p>
-    
-    <div class="event-grid" style="display: flex; flex-wrap: wrap; gap: 2.5rem; justify-content: center; padding: 0 1rem;">
-      
-      <div class="event-card" style="background: rgba(255,255,255,0.05); border: 1px solid var(--gold-light); padding: 3rem 2rem; border-radius: 20px; flex: 1; min-width: 320px; backdrop-filter: blur(5px);">
-        <i class="fa-solid fa-church" style="font-size: 3.5rem; color: var(--gold-light); margin-bottom: 1.5rem; display: block;"></i>
-        
-        <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 1rem; color: var(--gold-light); margin-bottom: 1rem;">Misa</p>
-        
-        <p style="font-size: 2.2rem; font-weight: bold; margin-bottom: 1rem; font-family: 'Cormorant Garamond', serif;">11:00 AM</p>
-        
-        <p style="font-size: 1.4rem; line-height: 1.4; margin-bottom: 1.5rem;">
-          Parroquia de Santiago Apóstol<br>
-          <span style="font-size: 1.1rem; opacity: 0.8;">Colonia Iturbe</span>
-        </p>
-        
-        <a href="https://www.google.com/maps/@20.0778524,-99.3197075,3a,75y,33.29h,90t/data=!3m7!1e1!3m5!1sEJaz2rWd1U6UbaBu4CZrMQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DEJaz2rWd1U6UbaBu4CZrMQ%26yaw%3D33.29082661636634!7i16384!8i8192?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-maps" style="display: inline-block; padding: 0.8rem 2rem; border: 1px solid var(--gold-light); color: var(--gold-light); text-decoration: none; border-radius: 30px; transition: all 0.3s;">
-          <i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> Ver mapa
-        </a>
-      </div>
 
-      <div class="event-card" style="background: rgba(255,255,255,0.05); border: 1px solid var(--gold-light); padding: 3rem 2rem; border-radius: 20px; flex: 1; min-width: 320px; backdrop-filter: blur(5px);">
-        <i class="fa-solid fa-champagne-glasses" style="font-size: 3.5rem; color: var(--gold-light); margin-bottom: 1.5rem; display: block;"></i>
-        
-        <p style="text-transform: uppercase; letter-spacing: 3px; font-size: 1rem; color: var(--gold-light); margin-bottom: 1rem;">Recepción</p>
-        
-        <p style="font-size: 2.2rem; font-weight: bold; margin-bottom: 1rem; font-family: 'Cormorant Garamond', serif;">03:00 PM</p>
-        
-        <p style="font-size: 1.4rem; line-height: 1.4; margin-bottom: 1.5rem;">
-          Casa de la familia Alcántara Reyes<br>
-          <span style="font-size: 1.1rem; opacity: 0.8;">Calle Graciano Sánchez #122</span>
-        </p>
-        
-        <a href="https://www.google.com/maps/place/Graciano+S%C3%A1nchez+122,+Iturbe,+42803+El+Llano,+Hgo./@20.0796541,-99.3234973,3a,75y,200.86h,63.63t/data=!3m7!1e1!3m5!1s61DlWDhj4jbHIrQi_DqqNQ!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D26.37489399672944%26panoid%3D61DlWDhj4jbHIrQi_DqqNQ%26yaw%3D200.86315210137346!7i16384!8i8192!4m5!3m4!1s0x85d22d2a7a640b83:0x9c11dc1a4046ca0c!8m2!3d20.0803407!4d-99.323556?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-maps" style="display: inline-block; padding: 0.8rem 2rem; border: 1px solid var(--gold-light); color: var(--gold-light); text-decoration: none; border-radius: 30px; transition: all 0.3s;">
-          <i class="fa-solid fa-location-dot" style="margin-right: 8px;"></i> Ver mapa
-        </a>
+<div class="event-bg">
+  <section style="color: inherit; padding: 0 1.2rem;">
+    <p class="section-label" style="color: var(--gold-light);">¿Dónde y Cuándo?</p>
+    <div class="event-grid">
+      <div class="event-card">
+        <i class="fa-solid fa-church" style="font-size: 3rem; color: var(--gold-light); margin-bottom: 1rem;"></i>
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;">Misa - 11:00 AM</p>
+        <p style="font-size: 1.4rem; margin: 1rem 0;">Parroquia Santiago Apóstol</p>
+        <a href="https://maps.google.com" target="_blank" class="btn-maps">Ver mapa</a>
       </div>
-
+      <div class="event-card">
+        <i class="fa-solid fa-champagne-glasses" style="font-size: 3rem; color: var(--gold-light); margin-bottom: 1rem;"></i>
+        <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;">Recepción - 03:00 PM</p>
+        <p style="font-size: 1.4rem; margin: 1rem 0;">Calle Graciano Sánchez #122</p>
+        <a href="https://maps.google.com" target="_blank" class="btn-maps">Ver mapa</a>
+      </div>
     </div>
   </section>
 </div>
-<div class="confirm-bg" style="background: linear-gradient(180deg, var(--cream) 0%, #e8e2f5 100%); padding: 6rem 1.5rem;">
-  <section style="max-width: 900px; margin: 0 auto; text-align: center;">
-    
-    <p class="section-label" style="color: var(--rose); font-family: 'Great Vibes', cursive; font-size: clamp(3.5rem, 9vw, 5.5rem); margin-bottom: 0.5rem;">
-      Confirmación
-    </p>
-    
-    <p style="font-family: 'Playfair Display', serif; letter-spacing: 0.3em; text-transform: uppercase; font-size: 1rem; color: var(--gold); margin-bottom: 3rem; padding: 0 1rem;">
-      Por favor confirma tu asistencia antes del 25 de Abril
-    </p>
 
-    <div class="rsvp-form" id="rsvpForm" style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; background: white; padding: 3rem 2rem; border-radius: 25px; box-shadow: 0 15px 40px rgba(145,119,200,0.15);">
-
-      <div style="text-align: left;">
-        <label style="display: block; font-family: 'Playfair Display', serif; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.8rem; font-weight: 600;">
-          <i class="fa-solid fa-user" style="margin-right: 8px; font-size: 0.8rem;"></i> Tu nombre completo
-        </label>
-        <input type="text" placeholder="Ej. Familia Alcántara Reyes" id="rsvpName" style="width: 100%; padding: 1.2rem; border: 1.5px solid rgba(145,119,200,0.2); border-radius: 12px; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; outline-color: var(--rose);" />
-      </div>
-
-      <div>
-        <span style="display: block; text-align: left; font-family: 'Playfair Display', serif; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rose); margin-bottom: 1rem; font-weight: 600;">
-          <i class="fa-solid fa-envelope-open-text" style="margin-right: 8px; font-size: 0.8rem;"></i> ¿Asistirás a la celebración?
-        </span>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;">
-  
-  <label style="position: relative; cursor: pointer;">
-    <input type="radio" name="asistencia" value="si" onchange="onAttendChange('si', this)" style="position: absolute; opacity: 0;" />
-    <div class="attend-card-inner" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.8rem 1rem; border: 2px solid rgba(145,119,200,0.1); border-radius: 18px; background: #fcfaff; transition: all 0.3s ease;">
-      <i class="fa-solid fa-check-circle" style="font-size: 2.2rem; color: #9177c8;"></i>
-      <span style="font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600;">Sí, asistiré</span>
+<section>
+  <p class="section-label">Confirmación</p>
+  <div class="rsvp-form-container" id="rsvpForm">
+    <div style="text-align: left; margin-bottom: 1.5rem;">
+      <label style="display:block; margin-bottom: 0.5rem; font-weight: 600; color: var(--rose);">Nombre Completo</label>
+      <input type="text" id="rsvpName" class="input-field" placeholder="Tu nombre">
     </div>
-  </label>
 
-  <label style="position: relative; cursor: pointer;">
-    <input type="radio" name="asistencia" value="no" onchange="onAttendChange('no', this)" style="position: absolute; opacity: 0;" />
-    <div class="attend-card-inner" style="display: flex; flex-direction: column; align-items: center; gap: 0.8rem; padding: 1.8rem 1rem; border: 2px solid rgba(145,119,200,0.1); border-radius: 18px; background: #fcfaff; transition: all 0.3s ease;">
-      <i class="fa-solid fa-times-circle" style="font-size: 2.2rem; color: #bbb;"></i>
-      <span style="font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600;">No podré ir</span>
-    </div>
-  </label>
-
-</div>
-      </div>
-
-      <div id="guestsWrap" style="display: none; flex-direction: column; gap: 1rem; animation: fadeIn 0.5s;">
-        <span style="display: block; text-align: left; font-family: 'Playfair Display', serif; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rose); font-weight: 600;">
-          <i class="fa-solid fa-users" style="margin-right: 8px; font-size: 0.8rem;"></i> ¿Cuántos pases utilizarán?
-        </span>
-        <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; background: #f8f6ff; padding: 1rem; border-radius: 15px;">
-          <button type="button" onclick="changeGuests(-1)" style="width: 50px; height: 50px; border-radius: 50%; border: none; background: white; font-size: 1.8rem; color: var(--rose); cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">−</button>
-          <span id="guestNum" style="font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--rose); font-weight: bold; min-width: 3rem;">1</span>
-          <button type="button" onclick="changeGuests(1)" style="width: 50px; height: 50px; border-radius: 50%; border: none; background: white; font-size: 1.8rem; color: var(--rose); cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">+</button>
+    <div class="attend-grid">
+      <label style="cursor:pointer; position: relative;">
+        <input type="radio" name="asistencia" value="si" onchange="onAttendChange('si', this)" style="position:absolute; opacity:0;">
+        <div class="attend-card-inner" style="padding: 1.5rem 0.5rem; border: 2px solid #eee; border-radius: 15px; background: #fcfaff; transition: 0.3s;">
+          <i class="fa-solid fa-check-circle" style="font-size: 1.8rem; color: #9177c8;"></i><br>Sí asistiré
         </div>
-      </div>
-
-      <div style="text-align: left;">
-        <label style="display: block; font-family: 'Playfair Display', serif; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rose); margin-bottom: 0.8rem; font-weight: 600;">
-          <i class="fa-solid fa-pen-nib" style="margin-right: 8px; font-size: 0.8rem;"></i> Dedicatoria para Valeria
-        </label>
-        <textarea id="rsvpMsg" placeholder="Escribe un deseo especial para la cumpleañera..." style="width: 100%; padding: 1.2rem; border: 1.5px solid rgba(145,119,200,0.2); border-radius: 12px; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; min-height: 120px; resize: none; outline-color: var(--rose);"></textarea>
-      </div>
-
-      <button class="btn-rsvp" onclick="submitRSVP()" style="background: linear-gradient(135deg, #7b68b5, #5a3d9a); color: white; border: none; padding: 1.4rem; font-family: 'Playfair Display', serif; font-size: 1.1rem; letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer; border-radius: 15px; box-shadow: 0 8px 25px rgba(123,104,181,0.4); transition: transform 0.2s;">
-        <i class="fa-solid fa-star" style="margin-right: 10px;"></i> Confirmar Asistencia
-      </button>
-
+      </label>
+      <label style="cursor:pointer; position: relative;">
+        <input type="radio" name="asistencia" value="no" onchange="onAttendChange('no', this)" style="position:absolute; opacity:0;">
+        <div class="attend-card-inner" style="padding: 1.5rem 0.5rem; border: 2px solid #eee; border-radius: 15px; background: #fcfaff; transition: 0.3s;">
+          <i class="fa-solid fa-times-circle" style="font-size: 1.8rem; color: #bbb;"></i><br>No podré ir
+        </div>
+      </label>
     </div>
 
-    <div class="confirm-msg" id="confirmMsg" style="display: none; padding: 4rem 1rem;">
-      <i class="fa-solid fa-heart" style="font-size: 4rem; color: var(--rose); margin-bottom: 1.5rem; display: block;"></i>
-      <p style="font-family: 'Great Vibes', cursive; font-size: 4rem; color: var(--rose); margin: 0;">¡Muchas gracias!</p>
-      <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: #555; font-style: italic; margin-top: 1rem;">Tu confirmación ha sido recibida con alegría.</p>
+    <div id="guestsWrap" style="display: none; flex-direction: column; align-items: center; margin-bottom: 1.5rem;">
+      <p style="margin-bottom: 0.5rem; font-weight: bold;">¿Cuántos invitados?</p>
+      <div style="display:flex; align-items: center; gap: 1.5rem;">
+        <button onclick="changeGuests(-1)" style="width:45px; height:45px; border-radius:50%; border:1px solid var(--rose); background:white; font-size: 1.5rem;">-</button>
+        <span id="guestNum" style="font-size: 2rem; font-weight: bold; min-width: 30px;">1</span>
+        <button onclick="changeGuests(1)" style="width:45px; height:45px; border-radius:50%; border:1px solid var(--rose); background:white; font-size: 1.5rem;">+</button>
+      </div>
     </div>
 
-  </section>
-</div>
+    <div style="text-align: left; margin-bottom: 1.5rem;">
+      <label style="display:block; margin-bottom: 0.5rem; font-weight: 600; color: var(--rose);">Mensaje Opcional</label>
+      <textarea id="rsvpMsg" class="input-field" style="min-height: 100px; resize: none;" placeholder="Dedicatoria..."></textarea>
+    </div>
 
-<footer style="text-align: center; padding: 4rem 1rem; opacity: 0.4; font-size: 2.1rem; letter-spacing: 3px;">
+    <button onclick="submitRSVP()" class="btn-submit" style="width: 100%; background: linear-gradient(135deg, #7b68b5, #5a3d9a); color:white; border:none; padding: 1.2rem; border-radius: 15px; font-family: 'Playfair Display'; font-size: 1.1rem; cursor:pointer; box-shadow: 0 8px 20px rgba(123,104,181,0.3);">
+      Confirmar Asistencia
+    </button>
+  </div>
+
+  <div id="confirmMsg" style="display:none; padding: 3rem 1rem;">
+    <i class="fa-solid fa-heart" style="font-size: 3.5rem; color: var(--rose); margin-bottom: 1rem;"></i>
+    <p style="font-family:'Great Vibes'; font-size: 3.5rem; color: var(--rose);">¡Muchas gracias!</p>
+    <p style="font-style: italic; font-size: 1.2rem;">Tu confirmación ha sido recibida.</p>
+  </div>
+</section>
+
+<footer>
   VALERIA GERALDINE • 2026 • XV AÑOS
 </footer>
+
 <script type="module">
-  // 1. IMPORTACIONES PARA FIRESTORE
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-  // 2. CONFIGURACIÓN
   const firebaseConfig = {
     apiKey: "AIzaSyD0Xoa7RdbQdP4hTKvl_GJX3brNYTBjfU4",
     authDomain: "invit-9dcbd.firebaseapp.com",
@@ -308,128 +257,71 @@
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // 3. VARIABLES DE ESTADO
   window.guestCount = 1;
   window.attendValue = '';
 
-  // 4. FUNCIONES GLOBALES
- window.onAttendChange = function(val, element) {
+  window.onAttendChange = function(val, element) {
     window.attendValue = val;
+    document.getElementById('guestsWrap').style.display = (val === 'si') ? 'flex' : 'none';
     
-    // 1. Mostrar/Ocultar el contador de invitados
-    const wrap = document.getElementById('guestsWrap');
-    if (wrap) {
-        wrap.style.display = (val === 'si') ? 'flex' : 'none';
-    }
-
-    // 2. Quitar el estilo "activo" de TODAS las tarjetas primero
-    const allCards = document.querySelectorAll('.attend-card-inner');
-    allCards.forEach(card => {
-        card.style.background = '#fcfaff'; // Fondo original
-        card.style.borderColor = 'rgba(145,119,200,0.1)'; // Borde original
-        card.style.transform = 'scale(1)';
-        card.querySelector('i').style.color = (card.innerText.includes('Sí')) ? '#9177c8' : '#bbb';
+    document.querySelectorAll('.attend-card-inner').forEach(card => {
+        card.style.background = "#fcfaff";
+        card.style.borderColor = "#eee";
+        card.style.transform = "scale(1)";
     });
-
-    // 3. Aplicar estilo "activo" solo a la tarjeta seleccionada
-    if (element) {
-        const activeCard = element.parentElement.querySelector('.attend-card-inner');
-        activeCard.style.background = '#f0ecfc'; // Fondo lila clarito
-        activeCard.style.borderColor = 'var(--rose)'; // Borde fuerte
-        activeCard.style.transform = 'scale(1.05)'; // Un poquito más grande
-        activeCard.querySelector('i').style.color = 'var(--rose)'; // Icono del color de la boda
-    }
-};
+    const selected = element.nextElementSibling;
+    selected.style.background = "#f0ecfc";
+    selected.style.borderColor = "var(--rose)";
+    selected.style.transform = "scale(1.05)";
+  };
 
   window.changeGuests = function(delta) {
-    window.guestCount = Math.max(1, Math.min(20, window.guestCount + delta));
-    const num = document.getElementById('guestNum');
-    if (num) num.textContent = window.guestCount;
+    window.guestCount = Math.max(1, Math.min(10, window.guestCount + delta));
+    document.getElementById('guestNum').innerText = window.guestCount;
   };
 
   window.submitRSVP = async function() {
     const name = document.getElementById('rsvpName').value.trim();
-    const msg = document.getElementById('rsvpMsg').value.trim();
-
-    if (!name) { alert('Por favor escribe tu nombre.'); return; }
-    if (!window.attendValue) { alert('Selecciona si asistirás.'); return; }
-
-    const btn = document.querySelector('.btn-rsvp');
-    btn.disabled = true;
-    btn.innerText = "ENVIANDO...";
+    if(!name || !window.attendValue) return alert("Por favor completa los campos.");
 
     try {
-      // Guardar en la colección "invitados" que ya tienes creada
-      await addDoc(collection(db, "invitados"), {
-        nombre: name,
-        asiste: window.attendValue,
-        pases: window.attendValue === 'si' ? window.guestCount : 0,
-        mensaje: msg,
-        fecha: new Date().toLocaleString('es-MX')
-      });
-
-      document.getElementById('rsvpForm').style.display = 'none';
-      document.getElementById('confirmMsg').style.display = 'block';
-    } catch (e) {
-      console.error("Error al guardar: ", e);
-      alert("Error al enviar. Verifica las reglas de Firestore.");
-      btn.disabled = false;
-      btn.innerText = "Confirmar asistencia";
-    }
+        await addDoc(collection(db, "invitados"), {
+            nombre: name,
+            asiste: window.attendValue,
+            pases: window.attendValue === 'si' ? window.guestCount : 0,
+            mensaje: document.getElementById('rsvpMsg').value,
+            fecha: new Date().toLocaleString()
+        });
+        document.getElementById('rsvpForm').style.display = 'none';
+        document.getElementById('confirmMsg').style.display = 'block';
+    } catch(e) { alert("Error al guardar."); }
   };
 
-  // --- LÓGICA DEL CONTADOR Y PÉTALOS (IGUAL QUE ANTES) ---
-  // Fecha objetivo: 2 de mayo de 2026 a las 11:00 AM
-const eventDate = new Date("May 2, 2026 11:00:00").getTime();
+  const eventDate = new Date("May 2, 2026 11:00:00").getTime();
+  setInterval(() => {
+    const diff = eventDate - new Date().getTime();
+    document.getElementById("days").innerText = Math.floor(diff / 86400000);
+    document.getElementById("hours").innerText = Math.floor((diff % 86400000) / 3600000);
+    document.getElementById("mins").innerText = Math.floor((diff % 3600000) / 60000);
+    document.getElementById("secs").innerText = Math.floor((diff % 60000) / 1000);
+  }, 1000);
 
-setInterval(() => {
-    const now = new Date().getTime();
-    const diff = eventDate - now;
-
-    // Obtener elementos del DOM
-    const d = document.getElementById("days");
-    const h = document.getElementById("hours");
-    const m = document.getElementById("mins");
-    const s = document.getElementById("secs"); // Elemento para segundos
-
-    if (d && h && m && s) {
-        // Cálculo de cada unidad
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        // Actualizar el texto en pantalla
-        d.innerText = days;
-        h.innerText = hours;
-        m.innerText = minutes;
-        s.innerText = seconds;
-    }
-}, 1000);
   const canvas = document.getElementById('petals-canvas');
   const ctx = canvas.getContext('2d');
-  let W, H, petals = [];
+  let W, H;
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   window.addEventListener('resize', resize); resize();
-  const COLORS = ['#ddd0f5','#c5bbea','#e8e0fc','#b8a8d8'];
-  class Petal {
-    constructor() { this.reset(true); }
-    reset(init = false) {
-      this.x = Math.random() * W; this.y = init ? Math.random() * H : -20;
-      this.r = Math.random() * 6 + 3; this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-      this.speed = Math.random() * 1.2 + 0.4; this.drift = (Math.random() - 0.5) * 0.6;
-      this.angle = Math.random() * Math.PI * 2; this.opacity = Math.random() * 0.4 + 0.2;
-    }
-    update() { this.y += this.speed; this.x += this.drift; if (this.y > H + 20) this.reset(); }
-    draw() {
-      ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle);
-      ctx.globalAlpha = this.opacity; ctx.fillStyle = this.color;
-      ctx.beginPath(); ctx.ellipse(0, 0, this.r, this.r * 1.7, 0, 0, Math.PI * 2); ctx.fill();
-      ctx.restore();
-    }
+  const petals = Array.from({length: 50}, () => ({
+    x: Math.random() * W, y: Math.random() * H, s: Math.random() * 1 + 0.5, r: Math.random() * 4 + 2
+  }));
+  function loop() {
+    ctx.clearRect(0,0,W,H);
+    petals.forEach(p => {
+      p.y += p.s; if(p.y > H) p.y = -20;
+      ctx.fillStyle = "#ddd8f5"; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+    });
+    requestAnimationFrame(loop);
   }
-  for (let i = 0; i < 60; i++) petals.push(new Petal());
-  function loop() { ctx.clearRect(0, 0, W, H); petals.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(loop); }
   loop();
 </script>
 </body>
