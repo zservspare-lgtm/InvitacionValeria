@@ -166,12 +166,25 @@
     .attend-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;
     }
-
+    #btnMusica {
+    animation: latido 2s infinite;
+  }
+@keyframes latido {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(123, 104, 181, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(123, 104, 181, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(123, 104, 181, 0); }
+  }
     footer { text-align: center; padding: 4rem 1rem; opacity: 0.5; font-size: clamp(0.9rem, 3vw, 1.2rem); letter-spacing: 3px; }
   </style>
 </head>
 <body>
+<audio id="trackXV" loop preload="auto">
+  <source src="musica_valeria.mp3" type="audio/mpeg">
+</audio>
 
+<div id="btnMusica" onclick="controlarMusica()" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000; width: 60px; height: 60px; background: linear-gradient(135deg, #7b68b5, #5a3d9a); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 25px rgba(0,0,0,0.4); border: 2px solid rgba(255,255,255,0.3); transition: 0.3s;">
+  <i id="iconoMusica" class="fa-solid fa-music" style="color: white; font-size: 1.5rem;"></i>
+</div>
 <canvas id="petals-canvas"></canvas>
 
 <div class="cover">
@@ -185,7 +198,7 @@
     Mis Quince Años
   </p>
   
-  <h1 class="cover-name" style="font-size: clamp(3.5rem, 12vw, 8.5rem);">Valeria Geraldine</h1>
+  <h1 class="cover-name" style="font-size: clamp(3.5rem, 12vw, 8.5rem);">Valeria Geraldin</h1>
   
   <div class="cover-image-container">
     <img src="imagenxv.png" class="quince-illustration" alt="Valeria Geraldine">
@@ -196,6 +209,7 @@
       <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label">Días</span></div>
       <div class="timer-box"><span class="timer-num" id="hours">00</span><span class="timer-label">Hrs</span></div>
       <div class="timer-box"><span class="timer-num" id="mins">00</span><span class="timer-label">Min</span></div>
+      <div class="timer-box"><span class="timer-num" id="secs">00</span><span class="timer-label">Seg</span></div>
     </div>
   </div>
 </div>
@@ -245,7 +259,7 @@
       <div class="event-card">
         <i class="fa-solid fa-champagne-glasses" style="font-size: 3rem; color: var(--gold-light); margin-bottom: 1rem;"></i>
         <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;">Recepción - 03:00 PM</p>
-        <p style="font-size: 1.4rem; margin: 1rem 0;">Calle Graciano Sánchez #353</p>
+        <p style="font-size: 1.4rem; margin: 1rem 0;">Calle Graciano Sánchez #122</p>
 
         <div style="width: 100%; height: 220px; border-radius: 15px; overflow: hidden; margin-bottom: 1rem; border: 1px solid rgba(145,119,200,0.3);">
           <iframe 
@@ -325,7 +339,36 @@
     messagingSenderId: "474365846886",
     appId: "1:474365846886:web:e63bbdbd02f6a6d07394a7"
   };
+ var miAudio = document.getElementById("trackXV");
+  var miIcono = document.getElementById("iconoMusica");
+  var estaSonando = false;
 
+  function controlarMusica() {
+    if (!estaSonando) {
+      miAudio.play().then(() => {
+        miIcono.classList.replace("fa-music", "fa-pause");
+        estaSonando = true;
+      }).catch(e => console.log("Esperando interacción del usuario..."));
+    } else {
+      miAudio.pause();
+      miIcono.classList.replace("fa-pause", "fa-music");
+      estaSonando = false;
+    }
+  }
+
+  // ESTE ES EL TRUCO: Reproduce la música al primer toque en cualquier lado
+  document.addEventListener('click', function() {
+    if (!estaSonando) {
+      controlarMusica();
+    }
+  }, { once: true }); // El { once: true } hace que esto solo pase la primera vez
+
+  // También funciona si empiezan a hacer scroll en el celular
+  document.addEventListener('touchstart', function() {
+    if (!estaSonando) {
+      controlarMusica();
+    }
+  }, { once: true });
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
