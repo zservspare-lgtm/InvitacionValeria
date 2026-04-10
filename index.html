@@ -390,7 +390,7 @@
   };
 
   window.changeGuests = function(delta) {
-    window.guestCount = Math.max(1, Math.min(10, window.guestCount + delta));
+    window.guestCount = Math.max(1, Math.min(50, window.guestCount + delta));
     document.getElementById('guestNum').innerText = window.guestCount;
   };
 
